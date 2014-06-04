@@ -21,14 +21,16 @@ import net.caoticode.Buhtig
 
 object Example2 extends App {
 
+  require(args.length >= 2)
+  
   val connInfo = OConnectionInfo("remote:localhost/githubv3", "admin", "admin")
   
   initializeGraph()
 
-  val token = "f7dd997038fe62bca495c590b52eb9860e84985c"
+  val Array(token, searchTerm) = args
   val buhtig = new Buhtig(token)
   val github = buhtig.client
-  val search = parse(github.search.repositories ? ("q" -> "tinkerpop", "language" -> "java", "sort" -> "forks", "order" -> "desc", "per_page" -> "100") sync)
+  val search = parse(github.search.repositories ? ("q" -> searchTerm, "language" -> "java", "sort" -> "forks", "order" -> "desc", "per_page" -> "100") sync)
 
   private implicit val formats = DefaultFormats
 
